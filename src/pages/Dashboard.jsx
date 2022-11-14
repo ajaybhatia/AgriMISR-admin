@@ -1,14 +1,13 @@
 import { BsFillTagsFill, BsFillTreeFill } from "react-icons/bs";
+import { MdAddBusiness, MdPersonAddAlt1 } from "react-icons/md";
 import { RiBarChartFill, RiPieChart2Fill } from "react-icons/ri";
 
 import { BiTestTube } from "react-icons/bi";
 import DashboardTile from "../components/DashboardTile";
 import { FaBell } from "react-icons/fa";
-import { GiFoldedPaper } from "react-icons/gi";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import { MdPersonAddAlt1 } from "react-icons/md";
+import { IoMap } from "react-icons/io5";
 import React from "react";
-import { SiAirtable } from "react-icons/si";
 
 const Dashboard = () => {
   return (
@@ -54,8 +53,7 @@ const Dashboard = () => {
         <DashboardTile
           title={13}
           subtitle="Satellite Insights"
-          icon={GiFoldedPaper}
-          iconRotate={90}
+          icon={IoMap}
           primaryBgColor="#14A2B8"
           secondaryBgColor="#1491A5"
         />
@@ -84,7 +82,7 @@ const Dashboard = () => {
         <DashboardTile
           title={1}
           subtitle="Total Vendors"
-          icon={SiAirtable}
+          icon={MdAddBusiness}
           primaryBgColor="#DC3545"
           secondaryBgColor="#C62F3E"
         />
