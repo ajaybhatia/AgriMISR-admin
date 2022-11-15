@@ -11,7 +11,7 @@ export default function Content({ sidebarIsOpen, toggleSidebar, children }) {
     >
       <Topbar sidebarIsOpen={sidebarIsOpen} toggleSidebar={toggleSidebar} />
 
-      <Container fluid className="p-1">
+      <Container fluid className="p-2">
         {children}
       </Container>
     </Container>

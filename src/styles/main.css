@@ -66,11 +66,15 @@ a:focus {
 }
 
 .menu-open {
-  background: #6d7fcc;
+  background: var(--primary);
 }
 
 .btn-menu-toggle {
   background-color: var(--primary);
+}
+
+.side-menu .nav-link {
+  color: var(--white);
 }
 
 .nav-link:hover,
@@ -81,21 +85,40 @@ a:focus {
   color: var(--white);
   background: var(--secondary);
 }
-.nav-item .active {
+.nav-item .active,
+.nav-link .active {
   color: var(--white);
   background: var(--secondary);
 }
 
 .items-menu {
   color: var(--off-white);
-  background: var(--primary);
+  background: var(--secondary);
+  padding: 0 0.5rem 0 0.5rem;
 }
 
-li a.dropdown-toggle::after {
+li a.dropdown-toggle.open::after {
   display: inline-flex;
   float: right;
   top: 10px;
   position: relative;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
+li a.dropdown-toggle.close::after {
+  display: inline-flex;
+  float: right;
+  top: 10px;
+  position: relative;
+  content: "";
+  border-bottom: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-top: 0;
+  border-left: 0.3em solid transparent;
 }
 
 .sidebar-header > span {
@@ -184,11 +207,36 @@ button,
   display: flex;
   flex-direction: column;
   height: 180px;
-  width: 320px;
+  width: calc(25% - 0.75rem);
   margin: 0 0.75rem 0.75rem 0;
   color: var(--white);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
 }
 
 .dashboard-tile > div:first-child {
   flex: 1;
+}
+
+@media screen and (max-width: 1306px) {
+  .dashboard-tile {
+    width: calc(30% - 0.75rem);
+  }
+}
+
+@media screen and (max-width: 1230px) {
+  .dashboard-tile {
+    width: calc(33% - 0.75rem);
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .dashboard-tile {
+    width: calc(50% - 0.75rem);
+  }
+}
+
+@media screen and (max-width: 882px) {
+  .dashboard-tile {
+    width: calc(100%);
+  }
 }

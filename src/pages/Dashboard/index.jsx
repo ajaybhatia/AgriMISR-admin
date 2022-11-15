@@ -3,7 +3,7 @@ import { MdAddBusiness, MdPersonAddAlt1 } from "react-icons/md";
 import { RiBarChartFill, RiPieChart2Fill } from "react-icons/ri";
 
 import { BiTestTube } from "react-icons/bi";
-import DashboardTile from "../components/DashboardTile";
+import DashboardTile from "../../components/DashboardTile";
 import { FaBell } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { IoMap } from "react-icons/io5";
@@ -11,7 +11,7 @@ import React from "react";
 
 const Dashboard = () => {
   return (
-    <>
+    <div>
       <h2>Dashboard</h2>
       <div className="d-flex flex-wrap">
         <DashboardTile
@@ -87,7 +87,7 @@ const Dashboard = () => {
           secondaryBgColor="#C62F3E"
         />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -12,21 +12,39 @@ export default function Menu({ icon: Icon, title, items, target, toggleMenu }) {
 
   const windowSize = useWindowSize();
 
+  const MenuNavLink = ({ children }) => {
+    const className = classNames({
+      active: window.location.pathname === target,
+      "dropdown-toggle": items.length > 0,
+      close: !collapsed,
+      open: collapsed,
+    });
+
+    const renderNav = (
+      <>
+        <Icon className="me-2" />
+        {title}
+      </>
+    );
+
+    if (items.length > 0) {
+      return <NavLink className={className}>{renderNav}</NavLink>;
+    }
+
+    return (
+      <NavLink tag={Link} to={target} className={className}>
+        {renderNav}
+      </NavLink>
+    );
+  };
+
   return (
     <div>
       <NavItem
         onClick={toggle}
         className={classNames({ "menu-open": !collapsed && items.length > 0 })}
       >
-        <NavLink
-          className={classNames({
-            active: window.location.pathname === target,
-            "dropdown-toggle": items.length > 0,
-          })}
-        >
-          <Icon className="me-2" />
-          {title}
-        </NavLink>
+        <MenuNavLink />
       </NavItem>
       {items.length > 0 && (
         <Collapse
@@ -34,14 +52,15 @@ export default function Menu({ icon: Icon, title, items, target, toggleMenu }) {
           navbar
           className={classNames("items-menu", { "mb-1": !collapsed })}
         >
-          {items.map((item, index) => (
+          {items.map(({ title, target, icon: Icon }, index) => (
             <NavItem key={index} className="pl-4">
               <NavLink
                 tag={Link}
-                to={item.target}
+                to={target}
                 onClick={() => windowSize.width <= 500 && toggleMenu(true)}
               >
-                {item.title}
+                <Icon className="me-2" />
+                {title}
               </NavLink>
             </NavItem>
           ))}
