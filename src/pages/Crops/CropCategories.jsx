@@ -3,100 +3,137 @@ import * as Yup from "yup";
 import {
   Badge,
   Button,
+  Col,
   Form,
   FormFeedback,
   FormGroup,
   Input,
+  InputGroup,
+  InputGroupText,
   Label,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
 } from "reactstrap";
-import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
 import React, { useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
+import dayjs from "dayjs";
+import onSearch from "../../helpers/onSearch";
 import { useFormik } from "formik";
 
 const CropCategories = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [search, setSearch] = useState("");
   const [data, setData] = useState([
     {
       id: 1,
       name: "Fruits",
       isActive: true,
+      createdAt: dayjs().subtract(1, "day").toDate(),
+      updatedAt: dayjs().subtract(1, "day").toDate(),
     },
     {
       id: 2,
       name: "Vegetables",
       isActive: true,
+      createdAt: dayjs().subtract(1, "day").toDate(),
+      updatedAt: dayjs().subtract(1, "day").toDate(),
     },
     {
       id: 3,
       name: "Flowers",
       isActive: true,
+      createdAt: dayjs().subtract(2, "day").toDate(),
+      updatedAt: dayjs().subtract(2, "day").toDate(),
     },
     {
       id: 4,
       name: "Herbs",
       isActive: false,
+      createdAt: dayjs().subtract(3, "day").toDate(),
+      updatedAt: dayjs().subtract(3, "day").toDate(),
     },
     {
       id: 5,
       name: "Grains",
       isActive: true,
+      createdAt: dayjs().subtract(4, "day").toDate(),
+      updatedAt: dayjs().subtract(4, "day").toDate(),
     },
     {
       id: 6,
       name: "Nuts",
       isActive: true,
+      createdAt: dayjs().subtract(4, "day").toDate(),
+      updatedAt: dayjs().subtract(4, "day").toDate(),
     },
     {
       id: 7,
       name: "Spices",
       isActive: false,
+      createdAt: dayjs().subtract(5, "day").toDate(),
+      updatedAt: dayjs().subtract(5, "day").toDate(),
     },
     {
       id: 8,
       name: "Tubers",
       isActive: true,
+      createdAt: dayjs().subtract(5, "day").toDate(),
+      updatedAt: dayjs().subtract(5, "day").toDate(),
     },
     {
       id: 9,
       name: "Fibers",
       isActive: true,
+      createdAt: dayjs().subtract(6, "day").toDate(),
+      updatedAt: dayjs().subtract(6, "day").toDate(),
     },
     {
       id: 10,
       name: "Medicinal",
       isActive: true,
+      createdAt: dayjs().subtract(7, "day").toDate(),
+      updatedAt: dayjs().subtract(7, "day").toDate(),
     },
     {
       id: 11,
       name: "Others",
       isActive: true,
+      createdAt: dayjs().subtract(7, "day").toDate(),
+      updatedAt: dayjs().subtract(7, "day").toDate(),
     },
     {
       id: 12,
       name: "Fruits",
       isActive: true,
+      createdAt: dayjs().subtract(8, "day").toDate(),
+      updatedAt: dayjs().subtract(8, "day").toDate(),
     },
     {
       id: 13,
       name: "Vegetables",
       isActive: true,
+      createdAt: dayjs().subtract(8, "day").toDate(),
+      updatedAt: dayjs().subtract(8, "day").toDate(),
     },
     {
       id: 14,
       name: "Flowers",
       isActive: true,
+      createdAt: dayjs().subtract(8, "day").toDate(),
+      updatedAt: dayjs().subtract(8, "day").toDate(),
     },
     {
       id: 15,
       name: "Herbs",
       isActive: true,
+      createdAt: dayjs().subtract(8, "day").toDate(),
+      updatedAt: dayjs().subtract(8, "day").toDate(),
     },
   ]);
 
@@ -137,6 +174,18 @@ const CropCategories = () => {
       {
         name: "Name",
         selector: (row) => row.name,
+        sortable: true,
+      },
+      {
+        name: "Created At",
+        selector: (row) => row.createdAt,
+        format: (row) => dayjs(row.createdAt).format("Do MMM, YYYY"),
+        sortable: true,
+      },
+      {
+        name: "Updated At",
+        selector: (row) => row.updatedAt,
+        format: (row) => dayjs(row.updatedAt).format("Do MMM, YYYY"),
         sortable: true,
       },
       {
@@ -196,20 +245,35 @@ const CropCategories = () => {
   return (
     <div>
       <h3>Crop Categories</h3>
+      <Row>
+        <Col xs={6} md={6} lg={4} xl={4} xxl={4}>
+          <InputGroup>
+            <InputGroupText>
+              <FaSearch />
+            </InputGroupText>
+            <Input
+              placeholder="Search by Name"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </InputGroup>
+        </Col>
+        <Col>
+          <Button
+            className="float-end"
+            color="success"
+            onClick={() => {
+              resetForm();
+              setShowFormModal(true);
+            }}
+          >
+            <FaPlus className="me-2" />
+            New Category
+          </Button>
+        </Col>
+      </Row>
       <div>
-        <Button
-          color="success"
-          onClick={() => {
-            resetForm();
-            setShowFormModal(true);
-          }}
-        >
-          <FaPlus className="me-2" />
-          New Category
-        </Button>
-      </div>
-      <div>
-        <DataTable pagination columns={columns} data={data} />
+        <DataTable pagination columns={columns} data={onSearch(search, data)} />
       </div>
 
       <Modal isOpen={showFormModal} size="lg">
