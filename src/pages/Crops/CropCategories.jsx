@@ -113,6 +113,7 @@ const CropCategories = () => {
     initialValues: {
       id: "",
       name: "",
+      description: "",
       isActive: true,
     },
     validationSchema: Yup.object({
@@ -225,6 +226,18 @@ const CropCategories = () => {
                 invalid={touched.name && errors.name}
               />
               <FormFeedback>{errors.name}</FormFeedback>
+            </FormGroup>
+            <FormGroup>
+              <Label for="description">Description</Label>
+              <Input
+                type="textarea"
+                name="description"
+                value={values.description}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                invalid={touched.description && errors.description}
+              />
+              <FormFeedback>{errors.description}</FormFeedback>
             </FormGroup>
             <FormGroup switch>
               <Label check>Is Active</Label>
