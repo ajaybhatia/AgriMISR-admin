@@ -240,3 +240,30 @@ button,
     width: calc(100%);
   }
 }
+
+/* ---------------------------------------------------
+    REACT DATA TABLE COMPONENT
+----------------------------------------------------- */
+.rdt_Table {
+  margin-top: 1rem;
+}
+
+.rdt_TableHead {
+  border-bottom: 1px solid #e8eaf6;
+}
+
+.rdt_TableHeadRow {
+  font-weight: 800;
+}
+
+.rdt_TableRow:nth-child(even) .rdt_TableCell {
+  background-color: #f4f6f9;
+}
+
+.rdt_TableRow:hover {
+  cursor: pointer;
+}
+
+.rdt_Pagination {
+  border-top: none;
+}
