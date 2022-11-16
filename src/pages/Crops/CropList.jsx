@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import {
+  Badge,
   Button,
   Form,
   FormFeedback,
@@ -160,7 +161,17 @@ const CropList = () => {
       {
         name: "Is Active",
         selector: (row) => row.isActive,
-        cell: (row) => (row.isActive ? "Yes" : "No"),
+        center: true,
+        cell: (row) =>
+          row.isActive ? (
+            <Badge color="success" pill>
+              Active
+            </Badge>
+          ) : (
+            <Badge color="danger" pill>
+              Inactive
+            </Badge>
+          ),
       },
       {
         name: "Actions",
