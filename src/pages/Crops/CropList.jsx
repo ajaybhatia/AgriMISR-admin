@@ -192,14 +192,17 @@ const CropList = () => {
       {
         name: "Name",
         selector: (row) => row.name,
+        sortable: true,
       },
       {
         name: "Category",
         selector: (row) => row.category,
+        sortable: true,
       },
       {
         name: "Is Active",
         selector: (row) => row.isActive,
+        sortable: true,
         center: true,
         cell: (row) =>
           row.isActive ? (
