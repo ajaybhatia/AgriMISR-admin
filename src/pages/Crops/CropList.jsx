@@ -3,25 +3,32 @@ import * as Yup from "yup";
 import {
   Badge,
   Button,
+  Col,
   Form,
   FormFeedback,
   FormGroup,
   Input,
+  InputGroup,
+  InputGroupText,
   Label,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
 } from "reactstrap";
-import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
 import React, { useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
+import dayjs from "dayjs";
+import onSearch from "../../helpers/onSearch";
 import { useFormik } from "formik";
 
 const CropList = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [search, setSearch] = useState("");
   const [data, setData] = useState([
     {
       id: 1,
@@ -30,6 +37,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/640px-Red_Apple.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(1, "day").toDate(),
+      updatedAt: dayjs().subtract(1, "day").toDate(),
     },
     {
       id: 2,
@@ -38,6 +47,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Banana_d%C3%A1gua.jpg/640px-Banana_d%C3%A1gua.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(2, "day").toDate(),
+      updatedAt: dayjs().subtract(2, "day").toDate(),
     },
     {
       id: 3,
@@ -46,6 +57,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Orange%2C_orange_peel.jpg/640px-Orange%2C_orange_peel.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(2, "day").toDate(),
+      updatedAt: dayjs().subtract(2, "day").toDate(),
     },
     {
       id: 4,
@@ -53,6 +66,8 @@ const CropList = () => {
       category: "Fruits",
       image: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Lemon.jpg",
       isActive: false,
+      createdAt: dayjs().subtract(3, "day").toDate(),
+      updatedAt: dayjs().subtract(3, "day").toDate(),
     },
     {
       id: 5,
@@ -61,6 +76,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Grapes_Dodoma_Tanzania.jpg/640px-Grapes_Dodoma_Tanzania.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(3, "day").toDate(),
+      updatedAt: dayjs().subtract(3, "day").toDate(),
     },
     {
       id: 6,
@@ -69,6 +86,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Ananas_comosus_Blanco2.458.jpg/640px-Ananas_comosus_Blanco2.458.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(3, "day").toDate(),
+      updatedAt: dayjs().subtract(3, "day").toDate(),
     },
     {
       id: 7,
@@ -77,6 +96,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Potato_and_cross_section.jpg/640px-Potato_and_cross_section.jpg",
       isActive: false,
+      createdAt: dayjs().subtract(3, "day").toDate(),
+      updatedAt: dayjs().subtract(3, "day").toDate(),
     },
     {
       id: 8,
@@ -85,6 +106,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bright_red_tomato_and_cross_section02.jpg/640px-Bright_red_tomato_and_cross_section02.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(4, "day").toDate(),
+      updatedAt: dayjs().subtract(4, "day").toDate(),
     },
     {
       id: 9,
@@ -93,6 +116,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Onion_on_White.JPG/640px-Onion_on_White.JPG",
       isActive: true,
+      createdAt: dayjs().subtract(4, "day").toDate(),
+      updatedAt: dayjs().subtract(4, "day").toDate(),
     },
     {
       id: 10,
@@ -101,6 +126,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Garlic.jpg/640px-Garlic.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(4, "day").toDate(),
+      updatedAt: dayjs().subtract(4, "day").toDate(),
     },
     {
       id: 11,
@@ -109,6 +136,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Starr-070730-7895-Daucus_carota_subsp_sativus-in_store-Foodland_Pukalani-Maui_%2824772637502%29.jpg/640px-Starr-070730-7895-Daucus_carota_subsp_sativus-in_store-Foodland_Pukalani-Maui_%2824772637502%29.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(4, "day").toDate(),
+      updatedAt: dayjs().subtract(4, "day").toDate(),
     },
     {
       id: 12,
@@ -117,6 +146,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Cogombre_llarg_holand%C3%A8s_%28fruit%29.png/640px-Cogombre_llarg_holand%C3%A8s_%28fruit%29.png",
       isActive: true,
+      createdAt: dayjs().subtract(5, "day").toDate(),
+      updatedAt: dayjs().subtract(5, "day").toDate(),
     },
     {
       id: 13,
@@ -125,6 +156,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Brassica_oleracea_var._capitata_%284170722993%29.jpg/640px-Brassica_oleracea_var._capitata_%284170722993%29.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(5, "day").toDate(),
+      updatedAt: dayjs().subtract(5, "day").toDate(),
     },
     {
       id: 14,
@@ -133,6 +166,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Rose-Rosa_03.jpg/640px-Rose-Rosa_03.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(8, "day").toDate(),
+      updatedAt: dayjs().subtract(8, "day").toDate(),
     },
     {
       id: 15,
@@ -141,6 +176,8 @@ const CropList = () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Lilium_%27Stargazer%27_%28the_%27Stargazer_lily%27%29.jpg/640px-Lilium_%27Stargazer%27_%28the_%27Stargazer_lily%27%29.jpg",
       isActive: true,
+      createdAt: dayjs().subtract(8, "day").toDate(),
+      updatedAt: dayjs().subtract(8, "day").toDate(),
     },
   ]);
 
@@ -200,6 +237,18 @@ const CropList = () => {
         sortable: true,
       },
       {
+        name: "Created At",
+        selector: (row) => row.createdAt,
+        format: (row) => dayjs(row.createdAt).format("Do MMM, YYYY"),
+        sortable: true,
+      },
+      {
+        name: "Updated At",
+        selector: (row) => row.updatedAt,
+        format: (row) => dayjs(row.updatedAt).format("Do MMM, YYYY"),
+        sortable: true,
+      },
+      {
         name: "Is Active",
         selector: (row) => row.isActive,
         sortable: true,
@@ -256,20 +305,35 @@ const CropList = () => {
   return (
     <div>
       <h3>Crop List</h3>
+      <Row>
+        <Col xs={6} md={6} lg={4} xl={4} xxl={4}>
+          <InputGroup>
+            <InputGroupText>
+              <FaSearch />
+            </InputGroupText>
+            <Input
+              placeholder="Search by Name or Category"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </InputGroup>
+        </Col>
+        <Col>
+          <Button
+            className="float-end"
+            color="success"
+            onClick={() => {
+              resetForm();
+              setShowFormModal(true);
+            }}
+          >
+            <FaPlus className="me-2" />
+            New Crop
+          </Button>
+        </Col>
+      </Row>
       <div>
-        <Button
-          color="success"
-          onClick={() => {
-            resetForm();
-            setShowFormModal(true);
-          }}
-        >
-          <FaPlus className="me-2" />
-          New Crop
-        </Button>
-      </div>
-      <div>
-        <DataTable pagination columns={columns} data={data} />
+        <DataTable pagination columns={columns} data={onSearch(search, data)} />
       </div>
 
       <Modal isOpen={showFormModal} size="lg">

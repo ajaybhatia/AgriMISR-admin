@@ -4,8 +4,12 @@ import "./styles/main.css";
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import dayjs from "dayjs";
 
 // import reportWebVitals from "./reportWebVitals";
+
+dayjs.extend(advancedFormat);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
