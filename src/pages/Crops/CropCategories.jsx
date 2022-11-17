@@ -43,7 +43,7 @@ const CropCategories = () => {
   );
 
   const { mutate } = useMutation(
-    (data) => axiosInstance.post("Crop/createUpdateCropCategory", data),
+    (crop) => axiosInstance.post("Crop/createUpdateCropCategory", crop),
     {
       onSuccess: refetch,
     }

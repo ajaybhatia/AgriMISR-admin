@@ -2,7 +2,7 @@ import axios from "axios";
 import { userStore } from "../store/useUserStore";
 
 const axiosInstance = axios.create({
-  baseURL: "http://95.111.231.114:85/api",
+  baseURL: "http://95.111.231.114:88/api",
 });
 
 axiosInstance.interceptors.request.use((config) => {
