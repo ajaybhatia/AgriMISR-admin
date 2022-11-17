@@ -1,1 +1,2 @@
+/agrimisr/api/* http://95.111.231.114:85/api/:splat 200
 /* /index.html 200
