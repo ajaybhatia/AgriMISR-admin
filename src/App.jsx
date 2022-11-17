@@ -5,6 +5,7 @@ import CropList from "./pages/Crops/CropList";
 import Dashboard from "./pages/Dashboard";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Login from "./pages/Authentication/Login";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

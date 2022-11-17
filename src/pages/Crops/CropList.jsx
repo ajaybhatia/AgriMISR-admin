@@ -21,165 +21,173 @@ import { FaPencilAlt, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
 import React, { useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
+import axiosInstance from "../../api/axiosInstance";
 import dayjs from "dayjs";
 import onSearch from "../../helpers/onSearch";
 import { useFormik } from "formik";
+import { useQuery } from "@tanstack/react-query";
 
 const CropList = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [search, setSearch] = useState("");
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: "Apple",
-      category: "Fruits",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/640px-Red_Apple.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(1, "day").toDate(),
-      updatedAt: dayjs().subtract(1, "day").toDate(),
-    },
-    {
-      id: 2,
-      name: "Banana",
-      category: "Fruits",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Banana_d%C3%A1gua.jpg/640px-Banana_d%C3%A1gua.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(2, "day").toDate(),
-      updatedAt: dayjs().subtract(2, "day").toDate(),
-    },
-    {
-      id: 3,
-      name: "Orange",
-      category: "Fruits",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Orange%2C_orange_peel.jpg/640px-Orange%2C_orange_peel.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(2, "day").toDate(),
-      updatedAt: dayjs().subtract(2, "day").toDate(),
-    },
-    {
-      id: 4,
-      name: "Lemon",
-      category: "Fruits",
-      image: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Lemon.jpg",
-      isActive: false,
-      createdAt: dayjs().subtract(3, "day").toDate(),
-      updatedAt: dayjs().subtract(3, "day").toDate(),
-    },
-    {
-      id: 5,
-      name: "Grapes",
-      category: "Fruits",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Grapes_Dodoma_Tanzania.jpg/640px-Grapes_Dodoma_Tanzania.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(3, "day").toDate(),
-      updatedAt: dayjs().subtract(3, "day").toDate(),
-    },
-    {
-      id: 6,
-      name: "Pineapple",
-      category: "Fruits",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Ananas_comosus_Blanco2.458.jpg/640px-Ananas_comosus_Blanco2.458.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(3, "day").toDate(),
-      updatedAt: dayjs().subtract(3, "day").toDate(),
-    },
-    {
-      id: 7,
-      name: "Potato",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Potato_and_cross_section.jpg/640px-Potato_and_cross_section.jpg",
-      isActive: false,
-      createdAt: dayjs().subtract(3, "day").toDate(),
-      updatedAt: dayjs().subtract(3, "day").toDate(),
-    },
-    {
-      id: 8,
-      name: "Tomato",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bright_red_tomato_and_cross_section02.jpg/640px-Bright_red_tomato_and_cross_section02.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(4, "day").toDate(),
-      updatedAt: dayjs().subtract(4, "day").toDate(),
-    },
-    {
-      id: 9,
-      name: "Onion",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Onion_on_White.JPG/640px-Onion_on_White.JPG",
-      isActive: true,
-      createdAt: dayjs().subtract(4, "day").toDate(),
-      updatedAt: dayjs().subtract(4, "day").toDate(),
-    },
-    {
-      id: 10,
-      name: "Garlic",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Garlic.jpg/640px-Garlic.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(4, "day").toDate(),
-      updatedAt: dayjs().subtract(4, "day").toDate(),
-    },
-    {
-      id: 11,
-      name: "Carrot",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Starr-070730-7895-Daucus_carota_subsp_sativus-in_store-Foodland_Pukalani-Maui_%2824772637502%29.jpg/640px-Starr-070730-7895-Daucus_carota_subsp_sativus-in_store-Foodland_Pukalani-Maui_%2824772637502%29.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(4, "day").toDate(),
-      updatedAt: dayjs().subtract(4, "day").toDate(),
-    },
-    {
-      id: 12,
-      name: "Cucumber",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Cogombre_llarg_holand%C3%A8s_%28fruit%29.png/640px-Cogombre_llarg_holand%C3%A8s_%28fruit%29.png",
-      isActive: true,
-      createdAt: dayjs().subtract(5, "day").toDate(),
-      updatedAt: dayjs().subtract(5, "day").toDate(),
-    },
-    {
-      id: 13,
-      name: "Cabbage",
-      category: "Vegetables",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Brassica_oleracea_var._capitata_%284170722993%29.jpg/640px-Brassica_oleracea_var._capitata_%284170722993%29.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(5, "day").toDate(),
-      updatedAt: dayjs().subtract(5, "day").toDate(),
-    },
-    {
-      id: 14,
-      name: "Rose",
-      category: "Flowers",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Rose-Rosa_03.jpg/640px-Rose-Rosa_03.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(8, "day").toDate(),
-      updatedAt: dayjs().subtract(8, "day").toDate(),
-    },
-    {
-      id: 15,
-      name: "Lily",
-      category: "Flowers",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Lilium_%27Stargazer%27_%28the_%27Stargazer_lily%27%29.jpg/640px-Lilium_%27Stargazer%27_%28the_%27Stargazer_lily%27%29.jpg",
-      isActive: true,
-      createdAt: dayjs().subtract(8, "day").toDate(),
-      updatedAt: dayjs().subtract(8, "day").toDate(),
-    },
-  ]);
+  const [data, setData] = useState([]);
+  // const [data, setData] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Apple",
+  //     category: "Fruits",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/640px-Red_Apple.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(1, "day").toDate(),
+  //     updatedAt: dayjs().subtract(1, "day").toDate(),
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Banana",
+  //     category: "Fruits",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Banana_d%C3%A1gua.jpg/640px-Banana_d%C3%A1gua.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(2, "day").toDate(),
+  //     updatedAt: dayjs().subtract(2, "day").toDate(),
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Orange",
+  //     category: "Fruits",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Orange%2C_orange_peel.jpg/640px-Orange%2C_orange_peel.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(2, "day").toDate(),
+  //     updatedAt: dayjs().subtract(2, "day").toDate(),
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Lemon",
+  //     category: "Fruits",
+  //     image: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Lemon.jpg",
+  //     isActive: false,
+  //     createdAt: dayjs().subtract(3, "day").toDate(),
+  //     updatedAt: dayjs().subtract(3, "day").toDate(),
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Grapes",
+  //     category: "Fruits",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Grapes_Dodoma_Tanzania.jpg/640px-Grapes_Dodoma_Tanzania.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(3, "day").toDate(),
+  //     updatedAt: dayjs().subtract(3, "day").toDate(),
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Pineapple",
+  //     category: "Fruits",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Ananas_comosus_Blanco2.458.jpg/640px-Ananas_comosus_Blanco2.458.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(3, "day").toDate(),
+  //     updatedAt: dayjs().subtract(3, "day").toDate(),
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Potato",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Potato_and_cross_section.jpg/640px-Potato_and_cross_section.jpg",
+  //     isActive: false,
+  //     createdAt: dayjs().subtract(3, "day").toDate(),
+  //     updatedAt: dayjs().subtract(3, "day").toDate(),
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Tomato",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bright_red_tomato_and_cross_section02.jpg/640px-Bright_red_tomato_and_cross_section02.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(4, "day").toDate(),
+  //     updatedAt: dayjs().subtract(4, "day").toDate(),
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Onion",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Onion_on_White.JPG/640px-Onion_on_White.JPG",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(4, "day").toDate(),
+  //     updatedAt: dayjs().subtract(4, "day").toDate(),
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Garlic",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Garlic.jpg/640px-Garlic.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(4, "day").toDate(),
+  //     updatedAt: dayjs().subtract(4, "day").toDate(),
+  //   },
+  //   {
+  //     id: 11,
+  //     name: "Carrot",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Starr-070730-7895-Daucus_carota_subsp_sativus-in_store-Foodland_Pukalani-Maui_%2824772637502%29.jpg/640px-Starr-070730-7895-Daucus_carota_subsp_sativus-in_store-Foodland_Pukalani-Maui_%2824772637502%29.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(4, "day").toDate(),
+  //     updatedAt: dayjs().subtract(4, "day").toDate(),
+  //   },
+  //   {
+  //     id: 12,
+  //     name: "Cucumber",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Cogombre_llarg_holand%C3%A8s_%28fruit%29.png/640px-Cogombre_llarg_holand%C3%A8s_%28fruit%29.png",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(5, "day").toDate(),
+  //     updatedAt: dayjs().subtract(5, "day").toDate(),
+  //   },
+  //   {
+  //     id: 13,
+  //     name: "Cabbage",
+  //     category: "Vegetables",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Brassica_oleracea_var._capitata_%284170722993%29.jpg/640px-Brassica_oleracea_var._capitata_%284170722993%29.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(5, "day").toDate(),
+  //     updatedAt: dayjs().subtract(5, "day").toDate(),
+  //   },
+  //   {
+  //     id: 14,
+  //     name: "Rose",
+  //     category: "Flowers",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Rose-Rosa_03.jpg/640px-Rose-Rosa_03.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(8, "day").toDate(),
+  //     updatedAt: dayjs().subtract(8, "day").toDate(),
+  //   },
+  //   {
+  //     id: 15,
+  //     name: "Lily",
+  //     category: "Flowers",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Lilium_%27Stargazer%27_%28the_%27Stargazer_lily%27%29.jpg/640px-Lilium_%27Stargazer%27_%28the_%27Stargazer_lily%27%29.jpg",
+  //     isActive: true,
+  //     createdAt: dayjs().subtract(8, "day").toDate(),
+  //     updatedAt: dayjs().subtract(8, "day").toDate(),
+  //   },
+  // ]);
+
+  useQuery(["getCrops"], () => axiosInstance.get("Crop/getCrops"), {
+    onSuccess: setData,
+    onError: (error) => console.log(error),
+  });
 
   const {
     handleSubmit,

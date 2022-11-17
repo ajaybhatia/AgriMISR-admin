@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/main.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

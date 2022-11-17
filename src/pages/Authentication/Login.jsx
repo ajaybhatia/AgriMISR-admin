@@ -15,6 +15,7 @@ import Logo from "../../assets/images/logo.png";
 import { Navigate } from "react-router-dom";
 import React from "react";
 import axiosInstance from "../../api/axiosInstance";
+import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "../../store/useUserStore";
@@ -27,8 +28,12 @@ const Login = () => {
       axiosInstance.post("Account/login", { email, password }),
     {
       onSuccess: (data) => {
-        setUser(data);
-        setToken(data.token);
+        if (data.message) {
+          toast.error(data.message);
+        } else {
+          setUser(data);
+          setToken(data.token);
+        }
       },
       onError: (error) => {
         console.log(error);

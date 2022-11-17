@@ -19,8 +19,10 @@ import {
 } from "reactstrap";
 import { FaPencilAlt, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
 import React, { useMemo, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import DataTable from "react-data-table-component";
+import axiosInstance from "../../api/axiosInstance";
 import dayjs from "dayjs";
 import onSearch from "../../helpers/onSearch";
 import { useFormik } from "formik";
@@ -29,113 +31,23 @@ const CropCategories = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [search, setSearch] = useState("");
-  const [data, setData] = useState([
+  const [data, setData] = useState([]);
+
+  const { refetch } = useQuery(
+    ["getCropCategories"],
+    () => axiosInstance.get("Crop/getCropCategories"),
     {
-      id: 1,
-      name: "Fruits",
-      isActive: true,
-      createdAt: dayjs().subtract(1, "day").toDate(),
-      updatedAt: dayjs().subtract(1, "day").toDate(),
-    },
+      onSuccess: setData,
+      onError: (error) => console.log(error),
+    }
+  );
+
+  const { mutate } = useMutation(
+    (data) => axiosInstance.post("Crop/createUpdateCropCategory", data),
     {
-      id: 2,
-      name: "Vegetables",
-      isActive: true,
-      createdAt: dayjs().subtract(1, "day").toDate(),
-      updatedAt: dayjs().subtract(1, "day").toDate(),
-    },
-    {
-      id: 3,
-      name: "Flowers",
-      isActive: true,
-      createdAt: dayjs().subtract(2, "day").toDate(),
-      updatedAt: dayjs().subtract(2, "day").toDate(),
-    },
-    {
-      id: 4,
-      name: "Herbs",
-      isActive: false,
-      createdAt: dayjs().subtract(3, "day").toDate(),
-      updatedAt: dayjs().subtract(3, "day").toDate(),
-    },
-    {
-      id: 5,
-      name: "Grains",
-      isActive: true,
-      createdAt: dayjs().subtract(4, "day").toDate(),
-      updatedAt: dayjs().subtract(4, "day").toDate(),
-    },
-    {
-      id: 6,
-      name: "Nuts",
-      isActive: true,
-      createdAt: dayjs().subtract(4, "day").toDate(),
-      updatedAt: dayjs().subtract(4, "day").toDate(),
-    },
-    {
-      id: 7,
-      name: "Spices",
-      isActive: false,
-      createdAt: dayjs().subtract(5, "day").toDate(),
-      updatedAt: dayjs().subtract(5, "day").toDate(),
-    },
-    {
-      id: 8,
-      name: "Tubers",
-      isActive: true,
-      createdAt: dayjs().subtract(5, "day").toDate(),
-      updatedAt: dayjs().subtract(5, "day").toDate(),
-    },
-    {
-      id: 9,
-      name: "Fibers",
-      isActive: true,
-      createdAt: dayjs().subtract(6, "day").toDate(),
-      updatedAt: dayjs().subtract(6, "day").toDate(),
-    },
-    {
-      id: 10,
-      name: "Medicinal",
-      isActive: true,
-      createdAt: dayjs().subtract(7, "day").toDate(),
-      updatedAt: dayjs().subtract(7, "day").toDate(),
-    },
-    {
-      id: 11,
-      name: "Others",
-      isActive: true,
-      createdAt: dayjs().subtract(7, "day").toDate(),
-      updatedAt: dayjs().subtract(7, "day").toDate(),
-    },
-    {
-      id: 12,
-      name: "Fruits",
-      isActive: true,
-      createdAt: dayjs().subtract(8, "day").toDate(),
-      updatedAt: dayjs().subtract(8, "day").toDate(),
-    },
-    {
-      id: 13,
-      name: "Vegetables",
-      isActive: true,
-      createdAt: dayjs().subtract(8, "day").toDate(),
-      updatedAt: dayjs().subtract(8, "day").toDate(),
-    },
-    {
-      id: 14,
-      name: "Flowers",
-      isActive: true,
-      createdAt: dayjs().subtract(8, "day").toDate(),
-      updatedAt: dayjs().subtract(8, "day").toDate(),
-    },
-    {
-      id: 15,
-      name: "Herbs",
-      isActive: true,
-      createdAt: dayjs().subtract(8, "day").toDate(),
-      updatedAt: dayjs().subtract(8, "day").toDate(),
-    },
-  ]);
+      onSuccess: refetch,
+    }
+  );
 
   const {
     handleSubmit,
@@ -160,8 +72,15 @@ const CropCategories = () => {
         .required("Name is required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      const request = values;
+      if (values.id === "") {
+        delete request.id;
+        mutate(request);
+      } else {
+        mutate(request);
+      }
       resetForm();
+      showFormModal(false);
     },
   });
 
