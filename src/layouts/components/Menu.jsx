@@ -12,7 +12,7 @@ export default function Menu({ icon: Icon, title, items, target, toggleMenu }) {
 
   const windowSize = useWindowSize();
 
-  const MenuNavLink = ({ children }) => {
+  const MenuNavLink = () => {
     const className = classNames({
       active: window.location.pathname === target,
       "dropdown-toggle": items.length > 0,
@@ -52,18 +52,23 @@ export default function Menu({ icon: Icon, title, items, target, toggleMenu }) {
           navbar
           className={classNames("items-menu", { "mb-1": !collapsed })}
         >
-          {items.map(({ title, target, icon: Icon }, index) => (
-            <NavItem key={index} className="pl-4">
-              <NavLink
-                tag={Link}
-                to={target}
-                onClick={() => windowSize.width <= 500 && toggleMenu(true)}
-              >
-                <Icon className="me-2" />
-                {title}
-              </NavLink>
-            </NavItem>
-          ))}
+          {items.map(({ title, target, icon: Icon }, index) => {
+            return (
+              <NavItem key={index} className="pl-4">
+                <NavLink
+                  className={classNames({
+                    active: window.location.pathname === target,
+                  })}
+                  tag={Link}
+                  to={target}
+                  onClick={() => windowSize.width <= 500 && toggleMenu(true)}
+                >
+                  <Icon className="me-2" />
+                  {title}
+                </NavLink>
+              </NavItem>
+            );
+          })}
         </Collapse>
       )}
     </div>

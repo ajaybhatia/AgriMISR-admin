@@ -25,6 +25,17 @@ a:focus {
   cursor: pointer;
 }
 
+/* ------------------------------------
+    LOGIN
+ ------------------------------------ */
+.bg-login {
+  margin: 0;
+  background: url("https://img.freepik.com/free-photo/green-tea-bud-leaves-green-tea-plantations-morning_335224-955.jpg?w=2000&t=st=1668658171~exp=1668658771~hmac=e14ca6a08d57f638576408fcfd4fd2ae700308a9a431222adcd4970407175033")
+    no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */

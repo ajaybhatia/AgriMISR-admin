@@ -7,7 +7,7 @@ const adminSubmenus = [
     title: "Dashboard",
     icon: AiFillDashboard,
     items: [],
-    target: "/",
+    target: "/dashboard",
   },
   {
     title: "Crops",
@@ -16,15 +16,15 @@ const adminSubmenus = [
       {
         title: "Category",
         icon: FaLeaf,
-        target: "/crops/categories",
+        target: "/dashboard/crops/categories",
       },
       {
         title: "Crop List",
         icon: RiLeafFill,
-        target: "/crops/list",
+        target: "/dashboard/crops/list",
       },
     ],
-    target: "/crops",
+    target: "",
   },
 ];
 
