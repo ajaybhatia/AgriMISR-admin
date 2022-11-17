@@ -1,6 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.css";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -11,8 +13,15 @@ import dayjs from "dayjs";
 
 dayjs.extend(advancedFormat);
 
+const client = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+
+root.render(
+  <QueryClientProvider client={client}>
+    <App />
+  </QueryClientProvider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

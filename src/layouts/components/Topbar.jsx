@@ -1,22 +1,27 @@
 import {
   Button,
-  Collapse,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Nav,
-  NavLink,
   Navbar,
-  NavbarToggler,
 } from "reactstrap";
+import { IoLogOutOutline, IoPersonCircleOutline } from "react-icons/io5";
 import React, { useState } from "react";
 import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarLeftExpand,
 } from "react-icons/tb";
 
-import { IoPersonCircleOutline } from "react-icons/io5";
+import useUserStore from "../../store/useUserStore";
 
 export default function Topbar({ sidebarIsOpen, toggleSidebar }) {
-  const [topbarIsOpen, setTopbarOpen] = useState(true);
-  const toggleTopbar = () => setTopbarOpen(!topbarIsOpen);
+  const { user, resetUser } = useUserStore();
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
 
   return (
     <Navbar className="navbar shadow-sm bg-white rounded" expand="md">
@@ -27,19 +32,26 @@ export default function Topbar({ sidebarIsOpen, toggleSidebar }) {
           <TbLayoutSidebarLeftExpand />
         )}
       </Button>
-      <NavbarToggler onClick={toggleTopbar} />
-      <Collapse isOpen={topbarIsOpen} navbar>
-        <Nav className="ms-auto" navbar>
-          <NavLink>
-            <div>
-              <span>
-                <IoPersonCircleOutline size={"2rem"} />
-              </span>
-              <span className="ms-1">Super Admin</span>
-            </div>
-          </NavLink>
-        </Nav>
-      </Collapse>
+      <Nav className="ms-auto" navbar>
+        <Dropdown
+          isOpen={dropdownOpen}
+          toggle={toggleDropdown}
+          direction="down"
+        >
+          <div className="d-flex align-items-center">
+            <IoPersonCircleOutline size={"2rem"} />
+            <DropdownToggle tag="span" className="cursor role" caret>
+              {user.email}
+            </DropdownToggle>
+          </div>
+          <DropdownMenu className="cursor">
+            <DropdownItem onClick={resetUser}>
+              <IoLogOutOutline className="me-1" />
+              Logout
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </Nav>
     </Navbar>
   );
 }
