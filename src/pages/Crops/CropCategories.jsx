@@ -18,26 +18,37 @@ import {
   Row,
 } from "reactstrap";
 import { FaPencilAlt, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
+import {
+  PAGINATION_ROWS_PER_PAGE_OPTIONS,
+  SKIP,
+  TAKE,
+} from "../../constants/datatable";
 import React, { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import DataTable from "react-data-table-component";
 import axiosInstance from "../../api/axiosInstance";
 import dayjs from "dayjs";
-import onSearch from "../../helpers/onSearch";
 import { useFormik } from "formik";
 
 const CropCategories = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
+  const [q, setQ] = useState("");
+  const [skip, setSkip] = useState(SKIP);
+  const [take, setTake] = useState(TAKE);
 
-  const { refetch } = useQuery(
-    ["getCropCategories"],
-    () => axiosInstance.get("Crop/getCropCategories"),
+  const { data, refetch } = useQuery(
+    ["getCropCategories", q, skip, take],
+    () =>
+      axiosInstance.get("Crop/getCropCategories", {
+        params: {
+          q,
+          skip,
+          take,
+        },
+      }),
     {
-      onSuccess: setData,
       onError: (error) => console.log(error),
     }
   );
@@ -80,7 +91,7 @@ const CropCategories = () => {
         mutate(request);
       }
       resetForm();
-      showFormModal(false);
+      setShowFormModal(false);
     },
   });
 
@@ -157,7 +168,6 @@ const CropCategories = () => {
   );
 
   const onDelete = () => {
-    setData(data.filter((item) => item.id !== values.id));
     setShowDeleteModal(false);
   };
 
@@ -172,8 +182,8 @@ const CropCategories = () => {
             </InputGroupText>
             <Input
               placeholder="Search by Name"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
             />
           </InputGroup>
         </Col>
@@ -192,7 +202,17 @@ const CropCategories = () => {
         </Col>
       </Row>
       <div>
-        <DataTable pagination columns={columns} data={onSearch(search, data)} />
+        <DataTable
+          pagination
+          paginationServer
+          columns={columns}
+          data={data?.cropCategoryResponses}
+          paginationTotalRows={data?.totalCount}
+          paginationPerPage={take}
+          paginationRowsPerPageOptions={PAGINATION_ROWS_PER_PAGE_OPTIONS}
+          onChangePage={(page) => setSkip((page - 1) * take)}
+          onChangeRowsPerPage={(perPage) => setTake(perPage)}
+        />
       </div>
 
       <Modal isOpen={showFormModal} size="lg">

@@ -278,3 +278,17 @@ button,
 .rdt_Pagination {
   border-top: none;
 }
+
+/* ---------------------------------------------------
+    FORM
+----------------------------------------------------- */
+input:has(~ .input-icon-right) {
+  padding-right: 2rem;
+}
+
+.input-icon-right {
+  position: relative;
+  left: -25px;
+  top: 12px;
+  z-index: 10;
+}

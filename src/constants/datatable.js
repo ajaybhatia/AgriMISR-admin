@@ -1,0 +1,3 @@
+export const PAGINATION_ROWS_PER_PAGE_OPTIONS = [10, 15, 20, 25, 50, 100];
+export const SKIP = 0;
+export const TAKE = PAGINATION_ROWS_PER_PAGE_OPTIONS[0];
