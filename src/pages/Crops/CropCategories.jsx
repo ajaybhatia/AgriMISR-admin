@@ -17,7 +17,13 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
-import { FaPencilAlt, FaPlus, FaSearch, FaTrashAlt } from "react-icons/fa";
+import {
+  FaPencilAlt,
+  FaPlus,
+  FaSearch,
+  FaTimes,
+  FaTrashAlt,
+} from "react-icons/fa";
 import {
   PAGINATION_ROWS_PER_PAGE_OPTIONS,
   SKIP,
@@ -185,6 +191,7 @@ const CropCategories = () => {
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
+            <FaTimes className="input-icon-right" onClick={() => setQ("")} />
           </InputGroup>
         </Col>
         <Col>

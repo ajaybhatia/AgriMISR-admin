@@ -210,7 +210,7 @@ const CropList = () => {
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
-            <FaTimes className="input-icon-right" />
+            <FaTimes className="input-icon-right" onClick={() => setQ("")} />
           </InputGroup>
         </Col>
         <Col>
