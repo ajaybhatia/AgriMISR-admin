@@ -14,32 +14,27 @@ import {
 import Logo from "../../assets/images/logo.png";
 import { Navigate } from "react-router-dom";
 import React from "react";
-import axiosInstance from "../../api/axiosInstance";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { useMutation } from "@tanstack/react-query";
+import { useLogin } from "../../api/auth-api-hooks";
 import useUserStore from "../../store/useUserStore";
 
 const Login = () => {
   const { setUser, token, setToken } = useUserStore();
 
-  const { mutate, isLoading } = useMutation(
-    ({ email, password }) =>
-      axiosInstance.post("Account/login", { email, password }),
-    {
-      onSuccess: (data) => {
-        if (data.message) {
-          toast.error(data.message);
-        } else {
-          setUser(data);
-          setToken(data.token);
-        }
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    }
-  );
+  const { mutate, isLoading } = useLogin({
+    onSuccess: (data) => {
+      if (data.message) {
+        toast.error(data.message);
+      } else {
+        setUser(data);
+        setToken(data.token);
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
     useFormik({

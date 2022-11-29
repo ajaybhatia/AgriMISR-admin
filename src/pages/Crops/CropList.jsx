@@ -30,10 +30,13 @@ import {
   TAKE,
 } from "../../constants/datatable";
 import React, { useMemo, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useCreateUpdateCrop,
+  useCropCategories,
+  useCrops,
+} from "../../api/crops-api-hooks";
 
 import DataTable from "react-data-table-component";
-import axiosInstance from "../../api/axiosInstance";
 import dayjs from "dayjs";
 import { useFormik } from "formik";
 
@@ -44,31 +47,18 @@ const CropList = () => {
   const [skip, setSkip] = useState(SKIP);
   const [take, setTake] = useState(TAKE);
 
-  const { data, refetch } = useQuery(
-    ["getCrops", q, skip, take],
-    () =>
-      axiosInstance.get("Crop/getCrops", {
-        params: {
-          q,
-          skip,
-          take,
-        },
-      }),
+  const { data, refetch } = useCrops(
+    { q, skip, take },
     {
       onError: (error) => console.log(error),
     }
   );
-  const { data: categories } = useQuery(["getCropCategories"], () =>
-    axiosInstance.get("Crop/getCropCategories")
-  );
+  const { data: categories } = useCropCategories();
 
-  const { mutate } = useMutation(
-    (crop) => axiosInstance.post("Crop/createUpdateCrop", crop),
-    {
-      onSuccess: refetch,
-      onError: (error) => console.log(error),
-    }
-  );
+  const { mutate } = useCreateUpdateCrop({
+    onSuccess: refetch,
+    onError: (error) => console.log(error),
+  });
 
   const {
     handleSubmit,
