@@ -33,6 +33,7 @@ import React, { useMemo, useState } from "react";
 import {
   useCreateUpdateCropCategory,
   useCropCategories,
+  useDeleteCropCategory,
 } from "../../api/crops-api-hooks";
 
 import DataTable from "react-data-table-component";
@@ -47,13 +48,17 @@ const CropCategories = () => {
   const [take, setTake] = useState(TAKE);
 
   const { data, refetch } = useCropCategories(
-    { q, skip, take },
+    { q, skip, take, onlyActive: false },
     {
       onError: (error) => console.log(error),
     }
   );
 
   const { mutate } = useCreateUpdateCropCategory({
+    onSuccess: refetch,
+  });
+
+  const { mutate: deleteCropCategory } = useDeleteCropCategory({
     onSuccess: refetch,
   });
 
@@ -165,6 +170,7 @@ const CropCategories = () => {
   );
 
   const onDelete = () => {
+    deleteCropCategory(values.id);
     setShowDeleteModal(false);
   };
 

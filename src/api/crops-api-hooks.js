@@ -38,3 +38,19 @@ export const useCreateUpdateCrop = (options) =>
     (data) => axiosInstance.post("Crop/createUpdateCrop", data),
     options
   );
+
+// DELETE APIS
+export const useDeleteCropCategory = (options) =>
+  useMutation(
+    (cropCategoryId) =>
+      axiosInstance.delete("Crop/deleteCropCategory", {
+        params: { cropCategoryId },
+      }),
+    options
+  );
+
+export const useDeleteCrop = (options) =>
+  useMutation(
+    (cropId) => axiosInstance.delete("Crop/deleteCrop", { params: { cropId } }),
+    options
+  );
