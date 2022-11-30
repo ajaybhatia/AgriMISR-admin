@@ -12,7 +12,7 @@ export const userStore = createVanilla(
       resetUser: () => set({ user: null, token: null }),
     }),
     {
-      name: "agrimisr-user",
+      name: "farmerapp-user",
       getStorage: () => localStorage,
     }
   )

@@ -11,7 +11,7 @@ export default function SideBar({ isOpen, toggle }) {
         <span color="info" onClick={toggle} style={{ color: "#fff" }}>
           &times;
         </span>
-        <h3 className="text-center">AGRIMISR</h3>
+        <h3 className="text-center">FarmerApp</h3>
       </div>
       <div className="side-menu">
         <Nav vertical className="list-unstyled pb-3">
